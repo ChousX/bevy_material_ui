@@ -847,7 +847,6 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         checkbox: MaterialCheckbox,
         label: &str,
     ) -> Entity {
-        let mut checkbox_entity = Entity::PLACEHOLDER;
         let label_color = theme.on_surface;
         let label_text = label.to_string();
         let bg_color = checkbox.container_color(theme);
@@ -872,7 +871,7 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         })
         .with_children(|row| {
             // Checkbox
-            checkbox_entity = row
+            let checkbox_entity = row
                 .spawn((
                     checkbox,
                     Button,
