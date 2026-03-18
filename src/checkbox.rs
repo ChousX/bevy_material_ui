@@ -950,8 +950,8 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
                 },
                 TextColor(label_color),
             ));
-        });
-        checkbox_entity
+        })
+        .id()
     }
 }
 
