@@ -819,7 +819,7 @@ pub trait SpawnCheckboxChild {
         theme: &MaterialTheme,
         state: CheckboxState,
         label: &str,
-    ) -> Entity;
+    );
 
     /// Spawn a checkbox using a builder for more control
     fn spawn_checkbox_with(
@@ -827,7 +827,7 @@ pub trait SpawnCheckboxChild {
         theme: &MaterialTheme,
         checkbox: MaterialCheckbox,
         label: &str,
-    ) -> Entity;
+    );
 }
 
 impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
@@ -836,9 +836,9 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         theme: &MaterialTheme,
         state: CheckboxState,
         label: &str,
-    ) -> Entity {
+    )  {
         let checkbox = CheckboxBuilder::new().state(state).build();
-        self.spawn_checkbox_with(theme, checkbox, label)
+        self.spawn_checkbox_with(theme, checkbox, label);
     }
 
     fn spawn_checkbox_with(
@@ -846,7 +846,7 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         theme: &MaterialTheme,
         checkbox: MaterialCheckbox,
         label: &str,
-    ) -> Entity {
+    ) {
         let label_color = theme.on_surface;
         let label_text = label.to_string();
         let bg_color = checkbox.container_color(theme);
@@ -949,8 +949,7 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
                 },
                 TextColor(label_color),
             ));
-        })
-        .id()
+        });
     }
 }
 
