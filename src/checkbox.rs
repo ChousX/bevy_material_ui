@@ -655,7 +655,9 @@ impl CheckboxBuilder {
                                     border: UiRect::all(Val::Px(CHECKBOX_BORDER_WIDTH)),
                                     justify_content: JustifyContent::Center,
                                     align_items: AlignItems::Center,
-                                    border_radius: BorderRadius::all(Val::Px(CHECKBOX_CORNER_RADIUS)),
+                                    border_radius: BorderRadius::all(Val::Px(
+                                        CHECKBOX_CORNER_RADIUS,
+                                    )),
                                     ..default()
                                 },
                                 BackgroundColor(bg_color),
@@ -770,7 +772,9 @@ impl SpawnCheckbox for Commands<'_, '_> {
                                         border: UiRect::all(Val::Px(CHECKBOX_BORDER_WIDTH)),
                                         justify_content: JustifyContent::Center,
                                         align_items: AlignItems::Center,
-                                        border_radius: BorderRadius::all(Val::Px(CHECKBOX_CORNER_RADIUS)),
+                                        border_radius: BorderRadius::all(Val::Px(
+                                            CHECKBOX_CORNER_RADIUS,
+                                        )),
                                         ..default()
                                     },
                                     BackgroundColor(bg_color),
@@ -810,7 +814,12 @@ impl SpawnCheckbox for Commands<'_, '_> {
 /// Extension trait to spawn checkboxes within a ChildSpawnerCommands context
 pub trait SpawnCheckboxChild {
     /// Spawn a checkbox with a label
-    fn spawn_checkbox(&mut self, theme: &MaterialTheme, state: CheckboxState, label: &str);
+    fn spawn_checkbox(
+        &mut self,
+        theme: &MaterialTheme,
+        state: CheckboxState,
+        label: &str,
+    ) -> Entity;
 
     /// Spawn a checkbox using a builder for more control
     fn spawn_checkbox_with(
@@ -818,13 +827,18 @@ pub trait SpawnCheckboxChild {
         theme: &MaterialTheme,
         checkbox: MaterialCheckbox,
         label: &str,
-    );
+    ) -> Entity;
 }
 
 impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
-    fn spawn_checkbox(&mut self, theme: &MaterialTheme, state: CheckboxState, label: &str) {
+    fn spawn_checkbox(
+        &mut self,
+        theme: &MaterialTheme,
+        state: CheckboxState,
+        label: &str,
+    ) -> Entity {
         let checkbox = CheckboxBuilder::new().state(state).build();
-        self.spawn_checkbox_with(theme, checkbox, label);
+        self.spawn_checkbox_with(theme, checkbox, label)
     }
 
     fn spawn_checkbox_with(
@@ -832,7 +846,8 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         theme: &MaterialTheme,
         checkbox: MaterialCheckbox,
         label: &str,
-    ) {
+    ) -> Entity {
+        let mut checkbox_entity = Entity::PLACEHOLDER;
         let label_color = theme.on_surface;
         let label_text = label.to_string();
         let bg_color = checkbox.container_color(theme);
@@ -857,7 +872,7 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
         })
         .with_children(|row| {
             // Checkbox
-            let checkbox_entity = row
+            checkbox_entity = row
                 .spawn((
                     checkbox,
                     Button,
@@ -901,7 +916,9 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
                                         border: UiRect::all(Val::Px(CHECKBOX_BORDER_WIDTH)),
                                         justify_content: JustifyContent::Center,
                                         align_items: AlignItems::Center,
-                                        border_radius: BorderRadius::all(Val::Px(CHECKBOX_CORNER_RADIUS)),
+                                        border_radius: BorderRadius::all(Val::Px(
+                                            CHECKBOX_CORNER_RADIUS,
+                                        )),
                                         ..default()
                                     },
                                     BackgroundColor(bg_color),
@@ -934,6 +951,7 @@ impl SpawnCheckboxChild for ChildSpawnerCommands<'_> {
                 TextColor(label_color),
             ));
         });
+        checkbox_entity
     }
 }
 
